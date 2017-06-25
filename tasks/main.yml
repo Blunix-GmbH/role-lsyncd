@@ -1,0 +1,25 @@
+---
+- name: install the lsyncd package
+  apt:
+    pkg: lsyncd
+    state: installed
+    update_cache: no
+    install_recommends: no
+
+- name: create lsyncd config directory
+  file:
+    name: /etc/lsyncd
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+- name: template lsyncd config file
+  template:
+    src: lsyncd.conf.lua.j2
+    dest: /etc/lsyncd/lsyncd.conf.lua
+    owner: root
+    group: root
+    mode: 0640
+  notify:
+    - restart lsyncd
