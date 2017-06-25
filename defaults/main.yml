@@ -1,12 +1,10 @@
 ---
-# Will template /etc/lsyncd/lsyncd.conf.lua
-# As the config syntax is to complex to write a readable template for,
-# this is taken as a yaml textblob
-lsyncd_config: |
+# A yaml multiline string which will template /etc/lsyncd/lsyncd.conf.lua
+lsyncd_config:
     sync {
         default.rsync,
         source    = "/var/www/",
-        target    = "172.16.0.11:/var/www",
+        target    = "root@172.16.0.11:/var/www",
         delay     = 5,
         rsync     = {
             binary   = "/usr/bin/rsync",
@@ -21,5 +19,9 @@ lsyncd_config: |
         nodaemon = false,
     }
 
+# Sets /proc/sys/fs/inotify/max_user_watches
+lsyncd_inotify_max_user_watches: 8192
+
 # Name of the lsyncd service
 lsyncd_service: lsyncd
+

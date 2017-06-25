@@ -10,7 +10,8 @@ Example Play
 ```yaml
 - hosts: foo
   vars:
-    lsyncd_log_interval: 120
+    TODO
+
   roles:
     - blunix.role-lsyncd
 ```
