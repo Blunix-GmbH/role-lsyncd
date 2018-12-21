@@ -1,27 +1,16 @@
-Ansible Role lsyncd
-====================
-
-This role configures a continously running rsync daemon called [lsyncd](https://axkibe.github.io/lsyncd/).
+# Ansible Role lsyncd
+This role configures a continously running rsync daemon called [lsyncd](https://axkibe.github.io/lsyncd/). It uses inotifywatch to "watch" a directory tree recursively for changes and then syncs them to the target host.
 
 
-Example Play
-------------
-
-```yaml
-- hosts: foo
-  vars:
-    TODO
-
-  roles:
-    - blunix.role-lsyncd
-```
+# Example Play
+For a documented example play please refer to `molecule/default/playbook.yml`.
 
 
 ## Requirements
 
 **Passwordless SSH**  
 This role requires the user running `lsyncd` to have passwordless SSH access configured to the client machine.
-A SSH keypair has to be set up on the `lsyncd` machine and its public key installed on the "client" machine.
+A SSH keypair has to be set up on the `lsyncd` machine for the root user and its public key installed on the "client" machine.
 
 **Sysctl settings**  
 As `lsyncd` `inotifywatch`'es the `source` directory for changes. `/proc/sys/fs/inotify/max_user_watches` may have to be increased accordingly. Increasing this setting may be required to prevent the message:
@@ -47,14 +36,10 @@ Inotify watching 25410 directories
 ```
 
 
-License
-=======
-
+# License
 Apache
 
-Author Information
-==================
-
+# Author Information
 Service and support for orchestrated hosting environments, continuous integration/deployment/delivery and various Linux and open-source technology stacks are available from:
 
 ```

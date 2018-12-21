@@ -1,5 +1,5 @@
 ---
 - name: restart lsyncd
   service:
-    name: "{{ lsyncd_service }}"
+    name: lsyncd
     state: restarted
