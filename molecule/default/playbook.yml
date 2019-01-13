@@ -1,0 +1,31 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  vars:
+    lsyncd_inotify_max_user_watches: 8192
+    lsyncd_sync_configurations:
+        # Required
+        # only the following characters are allowed for the name: a-z,A-Z,0-9,_
+      - name: sync_example_com_to_backup
+        source: /var/www
+        target: "root@172.16.0.11:/var/www"
+        # Optional
+        exclude: "{ '*.bak' , '*.tmp' }"
+        delay: 5
+  roles:
+    - role: role-lsyncd
+
+
+# Second run. The role will appended the new sync config to the main config file
+- name: Converge
+  hosts: all
+  become: yes
+  vars:
+    # lsyncd_inotify_max_user_watches will only be touched if defined
+    lsyncd_sync_configurations:
+      - name: sync_gitlab_to_backup
+        source: /opt/gitlab
+        target: "root@172.16.0.11:/opt/gitlab"
+  roles:
+    - role: role-lsyncd

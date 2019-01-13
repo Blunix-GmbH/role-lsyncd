@@ -1,0 +1,14 @@
+sync {
+    default.rsync,
+    source    = "{{ lsyncd_sync_configuration['source'] }}",
+    target    = "{{ lsyncd_sync_configuration['target'] }}",
+    delay     = {{ lsyncd_sync_configuration.get('deplay', 5) }},
+{% if lsyncd_sync_configuration.get('exclude', False) %}
+    exclude   = {{ lsyncd_sync_configuration['exclude'] }},
+{% endif %}
+    rsync     = {
+        binary   = "/usr/bin/rsync",
+        archive  = true,
+        compress = true
+    }
+}

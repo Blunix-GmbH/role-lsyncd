@@ -2,27 +2,47 @@
 - name: install the lsyncd package
   apt:
     pkg: lsyncd
-    state: installed
+    state: present
     update_cache: no
-    install_recommends: no
 
-- name: create lsyncd config directory
+- name: create config directories
   file:
-    name: /etc/lsyncd
+    name: /etc/lsyncd/conf.d/
     state: directory
     owner: root
     group: root
     mode: 0750
 
-- name: template lsyncd config file
+- name: template config snippet with the settings section
   template:
-    src: lsyncd.conf.lua.j2
+    src: templates/etc/lsyncd/conf.d/settings.conf.lua.j2
+    dest: /etc/lsyncd/conf.d/settings.conf.lua
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart lsyncd
+
+- name: template all sync config snippets
+  template:
+    src: templates/etc/lsyncd/conf.d/sync.conf.lua.j2
+    dest: "/etc/lsyncd/conf.d/{{ lsyncd_sync_configuration['name'] }}.conf.lua"
+    owner: root
+    group: root
+    mode: 0640
+  with_items: "{{ lsyncd_sync_configurations }}"
+  loop_control:
+    loop_var: lsyncd_sync_configuration
+  notify: restart lsyncd
+
+- name: assemble the config snippets in /etc/lsycnd/conf.d/
+  assemble:
+    src: /etc/lsyncd/conf.d/
     dest: /etc/lsyncd/lsyncd.conf.lua
     owner: root
     group: root
     mode: 0640
-  notify:
-    - restart lsyncd
+    delimiter: ""
+  notify: restart lsyncd
 
 - name: set /proc/sys/fs/inotify/max_user_watches
   sysctl:
@@ -31,3 +51,4 @@
     sysctl_set: yes
     state: present
     reload: yes
+  when: lsyncd_inotify_max_user_watches is defined
