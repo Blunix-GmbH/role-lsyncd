@@ -9,4 +9,4 @@ PHP_FPM_VERSION = '7.1'
 
 
 def test_executable_exists(host):
-    assert host.file('/usr/sbin/lsyncd').exists
+    assert host.file('/usr/bin/lsyncd').exists

@@ -1,52 +1,27 @@
-# Ansible Role lsyncd
-This role configures a continously running rsync daemon called [lsyncd](https://axkibe.github.io/lsyncd/). It uses inotifywatch to "watch" a directory tree recursively for changes and then syncs them to the target host.
+# blunix_role-lsyncd
+This Ansible role installs and configures lsyncd.
 
-
-# Example Play
-For a documented example play please refer to `molecule/default/playbook.yml`.
-
-
-## Requirements
-
-**Passwordless SSH**  
-This role requires the user running `lsyncd` to have passwordless SSH access configured to the client machine.
-A SSH keypair has to be set up on the `lsyncd` machine for the root user and its public key installed on the "client" machine.
-
-**Sysctl settings**  
-As `lsyncd` `inotifywatch`'es the `source` directory for changes. `/proc/sys/fs/inotify/max_user_watches` may have to be increased accordingly. Increasing this setting may be required to prevent the message:
-```
-lsyncd: Error, Terminating since out of inotify watches.#012Consider increasing /proc/sys/fs/inotify/max_user_watches
-```
-
-You should set a number higher than the amount of subdirectories in the directory that is to be kept in sync, for example:
-```
-root@web-one.example.com ~ # find /var/www -type d | wc -l | tail -n 1
-25410
-root@web-two.example.com /var $ cat /proc/sys/fs/inotify/max_user_watches
-8192
-root@web-two.example.com /var $ echo '8192 * 8' | bc
-65536
-root@web-two.example.com /var $ echo 65536 > /proc/sys/fs/inotify/max_user_watches
-```
-
-in `/var/log/syslog`. The `lsyncd` status logfile `/var/log/lsyncd-status.log` will also give you this information:
-```
-root@web-one.example.com ~ # cat /var/log/lsyncd-status.log | grep Inotify
-Inotify watching 25410 directories
-```
-
-
-# License
-Apache
+This role is part of the Blunix hosting stack. Learn how to use it at <a href="https://man.blunix.com/" target="_blank">man.blunix.com</a>.
 
 # Author Information
-Service and support for orchestrated hosting environments, continuous integration/deployment/delivery and various Linux and open-source technology stacks are available from:
+Blunix GmbH - Consulting for Linux Hosting 24/7
+
+Blunix GmbH provides 24/7 support with Service Level Agreements for Debian Linux based hosting environments which are automated with Ansible.
 
 ```
-Blunix GmbH - Professional Linux Service
+Blunix GmbH
 Glogauer Straße 21
-10999 Berlin - Germany
+10999 Berlin
+Germany
 
-Web: www.blunix.org
-Email: mailto:service@blunix.org
+Website: https://www.blunix.com
+E-Mail:  contact@blunix.com
+gpg key: https://www.blunix.com/contact-blunix-com-gpg-key
+Signal:  +49 30 629 318 76
+Matrix:  #blunix:matrix.org
 ```
+
+# License
+Apache-2.0
+
+Please refer to the LICENSE file in the root of this repository.

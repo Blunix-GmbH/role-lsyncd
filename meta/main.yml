@@ -1,14 +1,19 @@
 galaxy_info:
+
+  description: installs and configures lsyncd
   author: Peter Thurner
   company: Blunix GmbH
-  license: Apache
-  min_ansible_version: 1.2
+  license: Apache2
+  min_ansible_version: 2.9.10
 
   platforms:
   - name: Debian
     versions:
-    - jessie
+    - bullseye
 
   galaxy_tags:
-    - blunix
-    - lsyncd
+  - blunix
+  - lsyncd
+  - rsync
+
+dependencies: []
